@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение</title>
+</head>
+<body>
+<div th:each="el:${statement}">
+    <form method="post">
+        <textarea name="text" placeholder="Суть заявления" th:text="${el.text}"></textarea>
+        <select name="state">
+             <div th:each="st:${state}">
+                <option th:text="${st.code}"></option>
+            </div>
+        </select>
+        <br>
+        <button type="submit">Изменить</button>
+    </form>
+</div>
+</body>
+</html>

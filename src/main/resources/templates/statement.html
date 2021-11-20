@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание заявления</title>
+    <style>
+        .text{
+            text-align: center;
+        }
+        body{
+            background: black;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+<form th:action="${'/statement-add'}" method="post">
+<input type="text" name="text" placeholder="Суть заявления">
+    <select name="state">
+        <div th:each="el:${state}">
+            <option th:text="${el.code}"></option>
+        </div>
+    </select>
+    <br>
+    <button type="submit"></button>
+</form>
+</body>
+</html>

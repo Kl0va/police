@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Регистрация</title>
+    <style>
+        .text{
+            text-align: center;
+        }
+        body{
+            background: black;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+<div th:if="${param.error}">
+    Неправильны логин и/или пароль.
+</div>
+<div th:if="${param.logout}">
+    Успешный выход.
+</div>
+<div class="text" >
+<form th:action="@{/registration}" th:field="${user}" method="post">
+    <div><label> Логин: <input type="text" name="username"/> </label></div>
+    <br>
+    <div><label> Пароль: <input type="password" name="password"/> </label></div>
+    <br>
+    <div><label> Имя: <input type="text" name="first"/> </label></div>
+    <br>
+    <div><label> Фамилия: <input type="text" name="second"/> </label></div>
+    <br>
+    <div><label> Отчество: <input type="text" name="middle"/> </label></div>
+    <br>
+    <div><label> Серия: <input type="text" name="ser"/> </label></div>
+    <br>
+    <div><label> Номер: <input type="text" name="num"/> </label></div>
+    <br>
+    <div><input type="submit" value="Регистрация"/></div>
+</form>
+</div>
+</body>
+</html>
