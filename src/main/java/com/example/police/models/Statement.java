@@ -25,18 +25,20 @@ public class Statement {
     @NotNull
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     private User user;
-    @Nullable
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_statement",
             joinColumns = @JoinColumn(name = "statement_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id"))
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
-    public Statement(String text, boolean status, State state, User user){
+    public Statement(Long id, String text, boolean status, State state, User user, List<User> users) {
+        this.id = id;
         this.text = text;
         this.status = status;
         this.state = state;
         this.user = user;
+        this.users = users;
     }
 
     public Statement(){

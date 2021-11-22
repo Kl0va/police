@@ -31,8 +31,11 @@ public class MainController {
         if(user.getRole().getName().equals("USER")) {
             return "home";
         }
-        if(user.getRole().getName().equals("Employee")){
-            return "EmployeeHome";
+        if(user.getRole().getName().equals("EMPLOYEE")){
+            return "employeeHome";
+        }
+        if(user.getRole().getName().equals("ADMIN")){
+            return "adminHome";
         }
         return "redirect:/login";
     }
@@ -44,24 +47,36 @@ public class MainController {
             model.addAttribute("state",states);
             return "statement";
         }
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @PostMapping("/statement-add")
     public String addStatement(@AuthenticationPrincipal User user, @RequestParam String text,
             @RequestParam State state, Statement statement, Model model){
-        statement.setUser(user);
-        statement.setState(state);
-        statement.setText(text);
-        statementRepository.save(statement);
+        if(user.getRole().getName().equals("USER")) {
+            statement.setUser(user);
+            statement.setState(state);
+            statement.setText(text);
+            statementRepository.save(statement);
+        }
         return "redirect:/";
     }
 
     @GetMapping("/AllStatements")
     public String AllStatements(@AuthenticationPrincipal User user,Model model){
-        List<Statement> statement = statementRepository.findByUser(user);
-        model.addAttribute("statements",statement);
-        return "AllStatements";
+        if(user.getRole().getName().equals("USER")) {
+            List<Statement> statement = statementRepository.findByUser(user);
+            model.addAttribute("statements", statement);
+            return "AllStatements";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/search")
+    public String Search(@RequestParam String text,Model model){
+        List<Statement> statements = statementRepository.findByText(text);
+        model.addAttribute("statement",statements);
+        return "search";
     }
 
     @GetMapping("/edit/{id}")
@@ -69,6 +84,7 @@ public class MainController {
         if(!statementRepository.existsById(id)){
             return "redirect:/";
         }
+        if(user.getRole().getName().equals("USER")) {
             Iterable<State> states = stateRepository.findAll();
             model.addAttribute("state", states);
             Optional<Statement> statement = statementRepository.findById(id);
@@ -77,12 +93,14 @@ public class MainController {
             model.addAttribute("statement", res);
 
             return "editStatement";
+        }
+        return "redirect:/";
     }
 
     @PostMapping("/edit/{id}")
     public String updateStatements(@AuthenticationPrincipal User user,@PathVariable(value = "id") long id,@RequestParam String text,
             @RequestParam State state,Model model){
-        Statement statement = statementRepository.findById(id).orElseThrow();
+            Statement statement = statementRepository.findById(id).orElseThrow();
             statement.setUser(user);
             statement.setText(text);
             statement.setState(state);

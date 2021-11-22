@@ -9,4 +9,5 @@ import java.util.List;
 public interface StatementRepository extends CrudRepository<Statement, Long> {
     Statement findById(int id);
     List<Statement> findByUser(User user);
+    List<Statement> findByText(String text);
 }

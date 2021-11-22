@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -41,11 +42,11 @@ public class User implements UserDetails {
     @Nullable
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     private Position position;
-    @Nullable
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_statement",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "statement"))
+            inverseJoinColumns = @JoinColumn(name = "statement_id"))
     private List<Statement> statements;
 
     public String getUsername() {
@@ -147,12 +148,12 @@ public class User implements UserDetails {
         this.position = position;
     }
 
-    @Nullable
+
     public List<Statement> getStatements() {
         return statements;
     }
 
-    public void setStatements(@Nullable List<Statement> statements) {
+    public void setStatements( List<Statement> statements) {
         this.statements = statements;
     }
 }
