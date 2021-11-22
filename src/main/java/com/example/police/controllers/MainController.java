@@ -75,6 +75,7 @@ public class MainController {
             ArrayList<Statement> res = new ArrayList<>();
             statement.ifPresent(res::add);
             model.addAttribute("statement", res);
+
             return "editStatement";
     }
 
